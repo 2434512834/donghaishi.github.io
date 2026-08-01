@@ -2,7 +2,10 @@
 
 - 原文地址：https://jalammar.github.io/illustrated-transformer/
 - 翻译人：史东海+CHATGPT
-- 说明：不仅仅在原文基础上进行了翻译，更是举例对文章的内容进行通俗易懂的说明。
+- 说明：不在原文上进行了基础翻译，而是：
+  - 对内容进行梳理，阅读更流畅。
+  - 对文章的内容举例说明，易于阅读以及理解。
+
 
 
 
@@ -470,7 +473,7 @@ Transformer 最初由论文[《Attention Is All You Need》](https://arxiv.org/a
 - 解码组件（decoding component）
 - 编码组件与解码组件之间的连接（connections between them）
 
-![img](https://jalammar.github.io/images/t/The_transformer_encoders_decoders.png)
+![img](./assets/The_transformer_encoders_decoders-1784555999965-2.png)
 
 编码组件由多个编码器（Encoder）堆叠而成。
 
@@ -614,7 +617,7 @@ Transformer 在处理句子时，并不是孤立地理解每一个单词。
 - 如果你熟悉循环神经网络（RNN），可以回想一下它的隐藏状态。RNN 通过隐藏状态，将之前处理过的单词或向量的信息融入当前正在处理的内容。
 - 自注意力机制所起的作用与之类似：Transformer 利用自注意力，把其他相关单词的信息融入当前单词的表示之中。
 
-![img](https://jalammar.github.io/images/t/transformer_self-attention_visualization.png)
+![img](./assets/transformer_self-attention_visualization-1784555999966-9.png)
 
 例如，当编码器堆栈中的最后一层（如第 5 层）处理单词 **"it"** 时，并不会只根据 **"it"** 本身进行编码，而是会利用自注意力机制计算 **"it"** 与句子中其他单词的关联程度。
 
@@ -696,7 +699,7 @@ tired    → 5%
 
   
 
-![img](https://jalammar.github.io/images/t/transformer_self_attention_vectors.png)
+![img](./assets/transformer_self_attention_vectors-1784555999966-10.png)
 
 <p align="center">
   <font color="#999999">
@@ -733,7 +736,7 @@ tired    → 5%
 
 11111
 
-![img](https://jalammar.github.io/images/t/transformer_self_attention_score.png)
+![img](./assets/transformer_self_attention_score-1784555999966-11.png)
 
 ### 第三步：缩放注意力分数
 
@@ -946,7 +949,7 @@ machines 提供的信息：
 
 
 
-![img](https://jalammar.github.io/images/t/self-attention_softmax.png)
+![img](./assets/self-attention_softmax-1784555999966-12.png)
 
 这些 Softmax 分数就是注意力权重，它们决定了各个单词的信息应该在当前位置的输出中占多大比例。
 
@@ -1079,7 +1082,7 @@ z_1
 $$
 这意味着，第一个单词的新表示不再只包含它自身的信息，而是融合了输入序列中所有单词的信息。每个单词贡献多少信息，由它对应的注意力权重决定。
 
-![img](https://jalammar.github.io/images/t/self-attention-output.png)
+![img](./assets/self-attention-output-1784555999966-13.png)
 
 至此，自注意力的计算就完成了。得到的向量接下来会被传递给前馈神经网络。
 
@@ -1095,13 +1098,13 @@ $$
 
 
 
-![img](https://jalammar.github.io/images/t/self-attention-matrix-calculation.png)
+![img](./assets/self-attention-matrix-calculation-1784555999966-14.png)
 
 X 矩阵中的每一行都对应输入句子中的一个词。我们再次看到嵌入向量与 Q/K/V 向量在维度上的差异：嵌入向量的维度是 512（图中用 4 个方格表示），而 Q/K/V 向量的维度是 64（图中用 3 个方格表示）。
 
 
 
-![img](https://jalammar.github.io/images/t/self-attention-matrix-calculation-2.png)
+![img](./assets/self-attention-matrix-calculation-2-1784555999966-15.png)
 
 <p align="center">
   <font color="#999999">
@@ -1125,13 +1128,13 @@ The animal didn’t cross the street because it was too tired.
 
 原始 Transformer 使用 8 个注意力头，因此每个编码器和解码器都拥有 8 组 Query、Key、Value 权重矩阵。每组矩阵最初都会被随机初始化。经过训练后，它们会分别将输入词嵌入——或者来自较低层编码器、解码器的向量——投影到不同的表示子空间中。
 
-![img](https://jalammar.github.io/images/t/transformer_attention_heads_qkv.png)
+![img](./assets/transformer_attention_heads_qkv-1784555999966-16.png)
 在多头注意力机制中，每个注意力头都有各自独立的 Q、K、V 权重矩阵，因此会生成不同的 Q、K、V 矩阵。与前面的计算方式相同，我们将输入矩阵 $X$ 分别乘以 $W^Q$、$W^K$ 和 $W^V$，得到对应的 Q、K、V 矩阵。
 
 
 如果使用不同的权重矩阵，将前面介绍的自注意力计算分别执行 8 次，最终就会得到 8 个不同的 $Z$ 矩阵。
 
-![img](https://jalammar.github.io/images/t/transformer_attention_heads_z.png)
+![img](./assets/transformer_attention_heads_z-1784555999966-17.png)
 
 
 
@@ -1139,24 +1142,24 @@ The animal didn’t cross the street because it was too tired.
 
 具体该怎么做呢？首先将这 8 个矩阵拼接起来，然后再乘以一个额外的权重矩阵 $W^O$。
 
-![img](https://jalammar.github.io/images/t/transformer_attention_heads_weight_matrix_o.png)
+![img](./assets/transformer_attention_heads_weight_matrix_o-1784555999966-18.png)
 
 以上基本就是多头自注意力机制的全部内容了。我知道，这里涉及的矩阵确实不少。下面我尝试把它们集中到一张图中，方便我们从整体上查看。
 
-![img](https://jalammar.github.io/images/t/transformer_multi-headed_self-attention-recap.png)
+![img](./assets/transformer_multi-headed_self-attention-recap-1784555999966-19.png)
 
 
 
 现在我们已经介绍了注意力头，接下来让我们回到之前的示例，看看在对例句中的单词“it”进行编码时，不同的注意力头分别关注了哪些位置：
 
-![img](https://jalammar.github.io/images/t/transformer_self-attention_visualization_2.png)
+![img](./assets/transformer_self-attention_visualization_2-1784555999967-20.png)
 在对单词“it”进行编码时，一个注意力头主要关注“the animal”，另一个注意力头则主要关注“tired”。从某种意义上说，模型最终得到的“it”的表示中，融合了“animal”和“tired”这两个词的部分信息。
 
 
 
 然而，如果将所有注意力头都呈现在同一张图中，结果可能会变得更加难以理解：
 
-![img](https://jalammar.github.io/images/t/transformer_self-attention_visualization_3.png)
+![img](./assets/transformer_self-attention_visualization_3-1784555999967-21.png)
 
 ## 使用位置编码表示序列顺序
 
@@ -1168,7 +1171,7 @@ The animal didn’t cross the street because it was too tired.
 
 
 
-![img](https://jalammar.github.io/images/t/transformer_positional_encoding_vectors.png)
+![img](./assets/transformer_positional_encoding_vectors-1784555999967-22.png)
 
 <p align="center">
   <font color="#999999">
@@ -1180,7 +1183,7 @@ The animal didn’t cross the street because it was too tired.
 
 假设词嵌入的维度为 4，那么实际的位置编码如下所示：
 
-![img](https://jalammar.github.io/images/t/transformer_positional_encoding_example.png)
+![img](./assets/transformer_positional_encoding_example-1784555999967-23.png)
 
 <p align="center">
   <font color="#999999">
@@ -1196,7 +1199,7 @@ The animal didn’t cross the street because it was too tired.
 
 每一行包含 512 个数值，每个数值都介于 -1 和 1 之间。为了更清楚地展示其中的变化模式，我们使用不同颜色对这些数值进行了标记。
 
-![img](https://jalammar.github.io/images/t/transformer_positional_encoding_large_example.png)
+![img](./assets/transformer_positional_encoding_large_example-1784555999967-24.png)
 
 这是一个真实的位置编码示例，其中包含 20 个单词（对应 20 行），每个单词的嵌入维度为 512（对应 512 列）。
 
@@ -1212,21 +1215,21 @@ The animal didn’t cross the street because it was too tired.
 
 **2020 年 7 月更新：**上图所展示的位置编码来自 Transformer 的 Tensor2Tensor 实现。论文中介绍的方法略有不同：它不是直接将正弦信号和余弦信号拼接在一起，而是将这两种信号交错排列。下图展示了这种位置编码的形式。你可以在[这里查看生成代码](https://github.com/jalammar/jalammar.github.io/blob/master/notebookes/transformer/transformer_positional_encoding_graph.ipynb)。
 
-![img](https://jalammar.github.io/images/t/attention-is-all-you-need-positional-encoding.png)
+![img](./assets/attention-is-all-you-need-positional-encoding-1784555999967-25.png)
 
 ## 残差连接
 
 在继续讲解之前，还需要介绍编码器架构中的一个细节：每个编码器的各个子层（自注意力层和前馈神经网络层，FFNN）外部都设有残差连接，并在其后执行层归一化（[Layer Normalization](https://arxiv.org/abs/1607.06450)）操作。
 
-![img](https://jalammar.github.io/images/t/transformer_resideual_layer_norm.png)
+![img](./assets/transformer_resideual_layer_norm-1784555999967-26.png)
 
 如果将自注意力相关的向量以及层归一化（Layer Normalization，LayerNorm）操作可视化，它大致如下图所示：
 
-![img](https://jalammar.github.io/images/t/transformer_resideual_layer_norm_2.png)
+![img](./assets/transformer_resideual_layer_norm_2-1784555999967-27.png)
 
 码器的各个子层同样采用这种处理方式。如果我们设想一个由两层编码器和两层解码器堆叠而成的 Transformer，那么它的结构大致如下：
 
-![img](https://jalammar.github.io/images/t/transformer_resideual_layer_norm_3.png)
+![img](./assets/transformer_resideual_layer_norm_3-1784555999967-28.png)
 
 # 解码器部分
 
@@ -1238,7 +1241,7 @@ The animal didn’t cross the street because it was too tired.
 
 
 
-![img](https://jalammar.github.io/images/t/transformer_decoding_1.gif)
+![img](./assets/transformer_decoding_1-1784555999967-29.gif)
 
 <p align="center">
   <font color="#999999">
@@ -1260,7 +1263,7 @@ The animal didn’t cross the street because it was too tired.
 
 与处理编码器输入的方式相同，我们也会对解码器的输入进行词嵌入，并加入位置编码，以表示每个单词在输出序列中的位置。
 
-![img](https://jalammar.github.io/images/t/transformer_decoding_2.gif)
+![img](./assets/transformer_decoding_2-1784555999967-30.gif)
 
 解码器中的自注意力层与编码器中的自注意力层在工作方式上略有不同：
 
@@ -1461,7 +1464,9 @@ V = WV × H
 
 ------
 
-# 整个过程
+
+
+整个过程
 
 可以整理成下面这张表。
 
@@ -1612,7 +1617,7 @@ Decoder 堆栈最终输出的是一个由浮点数组成的隐藏向量（Hidden
 
 。
 
-![img](https://jalammar.github.io/images/t/transformer_decoder_output_softmax.png)
+![img](./assets/transformer_decoder_output_softmax-1784555999967-31.png)
 
 <p align="center">
   <font color="#999999">
@@ -1817,7 +1822,7 @@ softmax 层将Logit原始分数转换为**概率分布（Probability Distributio
 
 随后，模型选择概率最大的 TokenID（索引），再根据输出词汇表查找到该 TokenID 对应的 Token，作为当前时间步的生成结果。
 
-![img](https://jalammar.github.io/images/t/transformer_decoder_output_softmax.png)
+![img](./assets/transformer_decoder_output_softmax-1784555999967-31.png)
 
 <p align="center">
   <font color="#999999">
@@ -2004,7 +2009,7 @@ am
 | 4             | `student`    | 英文单词 "student"                 |
 | 5             | `<eos>`      | **End Of Sentence**，表示句子结束  |
 
-![img](https://jalammar.github.io/images/t/vocabulary.png)
+![img](./assets/vocabulary-1784555999967-32.png)
 
 <p align="center">
   <font color="#999999">
@@ -2015,7 +2020,7 @@ am
 
 例如，我们可以使用下面的向量表示单词“am”：
 
-![img](https://jalammar.github.io/images/t/one-hot-vocabulary-example.png)
+![img](./assets/one-hot-vocabulary-example-1784555999967-33.png)
 
 <p align="center">
   <font color="#999999">
@@ -2047,7 +2052,7 @@ am
 
 这意味着我们希望输出结果是一个表示“thanks”一词的概率分布。但由于该模型尚未训练，因此目前不太可能实现这一点。
 
-![img](https://jalammar.github.io/images/t/transformer_logits_output_and_label.png)
+![img](./assets/transformer_logits_output_and_label-1784555999967-34.png)
 
 <p align="center">
   <font color="#999999">
@@ -2082,7 +2087,7 @@ am
 - 第二个概率分布在与单词“am”相关的单元格处具有最高概率。
 - 如此往复，直到第五个输出分布指示“ `<end of sentence>`”符号，该符号还有一个与 10,000 个元素词汇表中的单元格关联的单元格。
 
-![img](https://jalammar.github.io/images/t/output_target_probability_distributions.png)
+![img](./assets/output_target_probability_distributions-1784555999967-35.png)
 
 <p align="center">
   <font color="#999999">
@@ -2092,7 +2097,7 @@ am
 
 在对模型进行足够长时间、足够大的数据集训练后，我们希望生成的概率分布如下所示：
 
-![img](https://jalammar.github.io/images/t/output_trained_model_probability_distributions.png)
+![img](./assets/output_trained_model_probability_distributions-1784555999967-36.png)
 
 <p align="center">
 <span style="font-size:0.9em;color:#888;">
